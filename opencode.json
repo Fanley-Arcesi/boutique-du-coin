@@ -16,7 +16,7 @@
   "agent": {
     "relecteur": {
       "description": "Relit les PR et poste un verdict. Aucun acces aux outils.",
-      "mode": "subagent",
+      "mode": "primary",
       "model": "google/gemini-flash-latest",
       "permission": {
         "read": "deny",
