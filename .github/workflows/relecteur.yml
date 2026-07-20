@@ -39,8 +39,11 @@ jobs:
           git diff origin/master...HEAD > changements.diff
           {
             echo "Tu es le critique de la Boutique du Coin, le meme qu'hier."
-            echo "Lis d'abord le fichier CONVENTIONS.md du projet : c'est la loi."
-            echo "Puis juge UNIQUEMENT les changements ci-dessous (un diff git),"
+            echo "Voici les conventions de relecture a appliquer :"
+            echo ""
+            cat CONVENTIONS.md
+            echo ""
+            echo "Juge UNIQUEMENT les changements ci-dessous (un diff git),"
             echo "en francais, au format de verdict exige par les conventions."
             echo "Tu ne corriges JAMAIS : tu juges, c'est tout."
             echo ""
