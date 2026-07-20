@@ -27,13 +27,9 @@ jobs:
         with:
           fetch-depth: 0      # tout l'historique, pour comparer avec main
 
-      - name: Installer OpenCode
-        run: curl -fsSL https://opencode.ai/install | bash
-
       - name: Relire les changements et rendre le verdict
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          GOOGLE_GENERATIVE_AI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           git fetch origin master
           git diff origin/master...HEAD > changements.diff
@@ -47,8 +43,17 @@ jobs:
             echo "Les changements a juger :"
             echo ""
             cat changements.diff
-          } > mission.txt
-          $HOME/.opencode/bin/opencode run "$(cat mission.txt)" > verdict.md || true
+          } > prompt.txt
+
+          jq -Rs '{contents: [{parts: [{text: .}]}]}' prompt.txt > payload.json
+
+          curl -fsS \
+            -X POST "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}" \
+            -H "Content-Type: application/json" \
+            -d @payload.json > reponse.json
+
+          jq -r '.candidates[0].content.parts[0].text // empty' reponse.json > verdict.md
+
           if [ ! -s verdict.md ]; then
             echo "Le relecteur n'a pas pu rendre son verdict. Verifier la cle GEMINI_API_KEY dans Settings > Secrets and variables > Actions." > verdict.md
           fi
