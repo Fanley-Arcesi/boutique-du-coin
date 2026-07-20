@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Recuperer le code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0      # tout l'historique, pour comparer avec main
 
@@ -35,8 +35,11 @@ jobs:
           git diff origin/master...HEAD > changements.diff
           {
             echo "Tu es le critique de la Boutique du Coin, le meme qu'hier."
-            echo "Lis d'abord le fichier CONVENTIONS.md du projet : c'est la loi."
-            echo "Puis juge UNIQUEMENT les changements ci-dessous (un diff git),"
+            echo "Voici les conventions de relecture a appliquer :"
+            echo ""
+            cat CONVENTIONS.md
+            echo ""
+            echo "Juge UNIQUEMENT les changements ci-dessous (un diff git),"
             echo "en francais, au format de verdict exige par les conventions."
             echo "Tu ne corriges JAMAIS : tu juges, c'est tout."
             echo ""
@@ -48,7 +51,7 @@ jobs:
           jq -Rs '{contents: [{parts: [{text: .}]}]}' prompt.txt > payload.json
 
           curl -fsS \
-            -X POST "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}" \
+            -X POST "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${GEMINI_API_KEY}" \
             -H "Content-Type: application/json" \
             -d @payload.json > reponse.json
 
