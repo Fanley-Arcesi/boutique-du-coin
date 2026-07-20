@@ -1,0 +1,15 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "google/gemini-2.0-flash",
+  "agent": {
+    "relecteur": {
+      "description": "Relit les PR et poste un verdict. Lecture seule.",
+      "mode": "subagent",
+      "model": "google/gemini-2.0-flash",
+      "permission": {
+        "edit": "deny",
+        "bash": "deny"
+      }
+    }
+  }
+}
