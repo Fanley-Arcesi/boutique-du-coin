@@ -12,5 +12,22 @@
         }
       }
     }
+  },
+  "agent": {
+    "relecteur": {
+      "description": "Relit les PR et poste un verdict. Aucun acces aux outils.",
+      "mode": "subagent",
+      "model": "google/gemini-flash-latest",
+      "permission": {
+        "read": "deny",
+        "edit": "deny",
+        "bash": "deny",
+        "glob": "deny",
+        "grep": "deny",
+        "task": "deny",
+        "webfetch": "deny",
+        "websearch": "deny"
+      }
+    }
   }
 }
